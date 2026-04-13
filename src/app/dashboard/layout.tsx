@@ -13,18 +13,21 @@ import {
   LogOut,
   Settings,
   Zap,
-  Layers
+  Layers,
+  LayoutGrid,
+  BarChart3
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 
 const navigation = [
-  { name: 'Overview', href: '/dashboard', icon: LineChart },
+  { name: 'Dashboard', href: '/dashboard', icon: LayoutGrid },
+  { name: 'Analytics', href: '/dashboard/analytics', icon: BarChart3 },
   { name: 'Upload Data', href: '/dashboard/upload', icon: UploadCloud },
   { name: 'AI Assistant', href: '/dashboard/ai-assistant', icon: MessageSquare },
   { name: 'Local CRM', href: '/dashboard/crm', icon: Users },
-  { name: 'Settings', href: '/dashboard/settings', icon: Settings },
 ]
+
 
 export default function DashboardLayout({
   children,

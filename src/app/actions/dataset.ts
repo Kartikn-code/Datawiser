@@ -85,3 +85,17 @@ export async function deleteDataset(id: string) {
   revalidatePath('/dashboard')
   return { success: true }
 }
+export async function getFullDatasets() {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from('datasets')
+    .select('*')
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error('Fetch full datasets error:', error)
+    return []
+  }
+
+  return data
+}

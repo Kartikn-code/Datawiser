@@ -1,7 +1,13 @@
+'use client'
+
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight, Bot, Database, Sparkles, TrendingUp, Zap, Layers, MousePointer2 } from 'lucide-react'
+import LoginModal from '@/components/auth/LoginModal'
 
 export default function Home() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
   return (
     <div className="min-h-screen bg-background text-foreground bg-mesh selection:bg-vivid-red/20 overflow-x-hidden">
       
@@ -19,12 +25,20 @@ export default function Home() {
               </span>
               Datawiser
             </div>
-            <Link 
-              href="/login"
-              className="px-6 py-2.5 rounded-full bg-white/80 border border-black/5 hover:bg-white text-sm font-bold transition-all shadow-sm"
-            >
-              Enter Portal
-            </Link>
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={() => setIsModalOpen(true)}
+                className="px-6 py-2.5 rounded-full bg-white/80 border border-black/5 hover:bg-white text-sm font-bold transition-all shadow-sm"
+              >
+                Log In
+              </button>
+              <button 
+                onClick={() => setIsModalOpen(true)}
+                className="px-6 py-2.5 rounded-full bg-vivid-red text-white hover:scale-105 active:scale-95 text-sm font-bold transition-all shadow-xl shadow-vivid-red/10"
+              >
+                Sign Up
+              </button>
+            </div>
           </header>
 
           <div className="max-w-4xl animate-in fade-in slide-in-from-left-8 duration-1000">
@@ -43,13 +57,13 @@ export default function Home() {
             </p>
             
             <div className="flex flex-col sm:flex-row items-center gap-5">
-              <Link
-                href="/login"
-                className="group relative px-10 py-5 rounded-2xl bg-vivid-red text-white font-black text-lg transition-all hover:scale-105 active:scale-95 shadow-xl shadow-vivid-red/10"
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="group relative px-10 py-5 rounded-2xl bg-vivid-red text-white font-black text-lg transition-all hover:scale-105 active:scale-95 shadow-xl shadow-vivid-red/10 flex items-center"
               >
                 Start Your Story
                 <ArrowRight className="inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              </button>
               <a
                 href="#narrative"
                 className="px-10 py-5 rounded-2xl bg-white/50 border border-black/5 font-bold text-foreground/60 hover:text-foreground transition-all flex items-center gap-2"
@@ -173,12 +187,12 @@ export default function Home() {
           <p className="text-xl text-foreground/40 mb-12 max-w-2xl mx-auto font-medium">
             Join forward-thinking businesses who have mastered the art of listening to their data.
           </p>
-          <Link
-            href="/login"
+          <button
+            onClick={() => setIsModalOpen(true)}
             className="inline-flex items-center px-12 py-6 rounded-2xl bg-foreground text-white font-black text-xl hover:scale-105 active:scale-95 transition-all shadow-2xl"
           >
             Open Datawiser
-          </Link>
+          </button>
         </div>
       </section>
 
@@ -189,6 +203,8 @@ export default function Home() {
             </p>
          </div>
       </footer>
+
+      <LoginModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   )
 }

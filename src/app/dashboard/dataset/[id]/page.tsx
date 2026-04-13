@@ -1,8 +1,8 @@
 import { getDatasetById } from '@/app/actions/dataset'
-import DynamicCharts from '@/components/dashboard/DynamicCharts'
+import AnalyticsEngine from '@/components/dashboard/AnalyticsEngine'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { ArrowLeft, Database, Download, Sparkles } from 'lucide-react'
+import { ArrowLeft, Database, Sparkles, LayoutPanelLeft, Clock } from 'lucide-react'
 import ExportButtons from '@/components/dashboard/ExportButtons'
 import DeleteDatasetButton from '@/components/dashboard/DeleteDatasetButton'
 
@@ -14,48 +14,64 @@ export default async function DatasetPage({ params }: { params: Promise<{ id: st
     return notFound()
   }
 
-  // Calculate simple insights for the dataset overview
   const rowCount = dataset.data.length
   const columnCount = dataset.headers.length
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-7xl mx-auto">
-      <div className="flex items-center text-sm font-medium text-gray-500 mb-2">
-        <Link href="/dashboard" className="hover:text-indigo-600 flex items-center gap-1">
-          <ArrowLeft className="w-4 h-4" /> Back to Dashboard
+    <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 max-w-[1600px] mx-auto">
+      <div className="flex items-center justify-between">
+        <Link 
+          href="/dashboard/analytics" 
+          className="group flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 hover:text-vivid-purple transition-all"
+        >
+          <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> 
+          Back to Repository
         </Link>
+        <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-foreground/20">
+            <LayoutPanelLeft className="w-4 h-4" />
+            Analysis Workspace
+        </div>
       </div>
       
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-8 pb-10 border-b border-black/5">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 tracking-tight flex items-center gap-3">
-            <Database className="w-8 h-8 text-indigo-500" />
-            {dataset.name}
-          </h1>
-          <p className="mt-1 text-gray-500 flex items-center gap-2 text-sm">
-            Uploaded on {new Date(dataset.created_at).toLocaleDateString()}
-            <span className="w-1 h-1 rounded-full bg-gray-300"></span>
-            {rowCount} rows
-            <span className="w-1 h-1 rounded-full bg-gray-300"></span>
-            {columnCount} columns
-          </p>
+          <div className="flex items-center gap-4 mb-4">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-vivid-purple to-electric-purple flex items-center justify-center text-white shadow-lg shadow-vivid-purple/20">
+                <Database className="w-6 h-6" />
+            </div>
+            <h1 className="text-4xl font-heading font-black text-foreground tracking-tighter">
+                {dataset.name}
+            </h1>
+          </div>
+          <div className="mt-1 text-foreground/40 flex flex-wrap items-center gap-4 text-[10px] font-black uppercase tracking-widest">
+            <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {new Date(dataset.created_at).toLocaleDateString()}</span>
+            <span className="w-1 h-1 rounded-full bg-black/10"></span>
+            <span className="flex items-center gap-1.5">{rowCount} Data Points</span>
+            <span className="w-1 h-1 rounded-full bg-black/10"></span>
+            <span className="flex items-center gap-1.5">{columnCount} Dimensional Nodes</span>
+          </div>
         </div>
         
-        <div className="flex flex-wrap items-center gap-3">
-          <DeleteDatasetButton datasetId={dataset.id} />
+        <div className="flex flex-wrap items-center gap-4">
           <ExportButtons data={dataset.data} filename={dataset.name} />
+          <DeleteDatasetButton datasetId={dataset.id} />
           <Link 
             href={`/dashboard/ai-assistant?dataset=${dataset.id}`}
-            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 shadow-sm transition-all print:hidden"
+            className="inline-flex items-center justify-center gap-3 px-8 py-3.5 rounded-2xl text-sm font-black text-white bg-vivid-purple hover:scale-105 transition-all shadow-xl shadow-vivid-purple/20 active:scale-95"
           >
             <Sparkles className="w-4 h-4" />
-            <span>Ask AI</span>
+            <span>AI Insights Engine</span>
           </Link>
         </div>
       </div>
 
-      {/* Render the Dynamic Charts */}
-      <DynamicCharts data={dataset.data} headers={dataset.headers} />
+      <AnalyticsEngine 
+        data={dataset.data} 
+        headers={dataset.headers} 
+        datasetId={dataset.id}
+        datasetName={dataset.name}
+      />
+
 
       {/* Raw Data Preview */}
       <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">

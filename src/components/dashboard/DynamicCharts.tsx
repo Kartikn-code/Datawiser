@@ -107,7 +107,7 @@ export default function DynamicCharts({ data, headers }: DynamicChartsProps) {
     })
 
     // 4. Sort (descending by the aggregated value)
-    aggregated.sort((a, b) => b[yAxisKey] - a[yAxisKey])
+    aggregated.sort((a, b) => (b[yAxisKey] as any) - (a[yAxisKey] as any))
 
     return aggregated
   }, [data, xAxisKey, yAxisKey, aggregation, searchTerm])
@@ -120,7 +120,7 @@ export default function DynamicCharts({ data, headers }: DynamicChartsProps) {
   const formatValue = (val: number) => {
     if (val >= 1000000) return `${(val / 1000000).toFixed(1)}M`
     if (val >= 1000) return `${(val / 1000).toFixed(1)}k`
-    return val
+    return val.toString()
   }
 
   const tooltipFormatter = (value: number) => {
@@ -289,7 +289,7 @@ export default function DynamicCharts({ data, headers }: DynamicChartsProps) {
                     innerRadius={80}
                     outerRadius={130}
                     paddingAngle={3}
-                    label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                    label={({ name, percent }) => `${name} (${((percent || 0) * 100).toFixed(0)}%)`}
                     labelLine={false}
                   >
                     {chartData.slice(0, 10).map((entry, index) => (

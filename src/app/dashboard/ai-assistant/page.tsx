@@ -1,11 +1,11 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { Bot, Send, User, Database, Loader2, Sparkles, Zap, MessageSquare } from 'lucide-react'
 import { getDatasets, getDatasetById } from '@/app/actions/dataset'
 
-export default function AIAssistantPage() {
+function AIAssistantContent() {
   const searchParams = useSearchParams()
   const datasetIdParam = searchParams.get('dataset')
 
@@ -237,5 +237,17 @@ export default function AIAssistantPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function AIAssistantPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center h-full">
+        <Loader2 className="w-10 h-10 animate-spin text-vivid-purple" />
+      </div>
+    }>
+      <AIAssistantContent />
+    </Suspense>
   )
 }

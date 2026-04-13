@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, BarChart3, Database, TrendingUp, Users, Sparkles, Zap } from 'lucide-react'
+import { ArrowRight, BarChart3, Database, TrendingUp, Users, Sparkles, Zap, Clock, Plus, LayoutGrid } from 'lucide-react'
 import { getDatasets } from '@/app/actions/dataset'
 import { getCustomers, getCustomerTransactions } from '@/app/actions/crm'
 
@@ -21,16 +21,18 @@ export default async function DashboardOverview() {
     <div className="space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-1000">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-6 border-b border-black/5">
         <div>
-          <h1 className="text-4xl font-heading font-black tracking-tighter text-foreground">Ecosystem <span className="text-vivid-red">Clarity</span></h1>
-          <p className="mt-2 text-foreground/40 font-bold uppercase tracking-widest text-[10px]">Live business intelligence feed</p>
+          <h1 className="text-4xl font-heading font-black tracking-tighter text-foreground">Analytics <span className="text-vivid-red">Cockpit</span></h1>
+          <p className="mt-2 text-foreground/40 font-bold uppercase tracking-widest text-[10px]">Command center for your data ecosystem</p>
         </div>
-        <Link 
-          href="/dashboard/upload" 
-          className="group relative inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl text-sm font-black text-white bg-foreground hover:scale-105 active:scale-95 transition-all shadow-xl shadow-black/10"
-        >
-          <Database className="w-4 h-4" />
-          <span>Upload Dataset</span>
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link 
+            href="/dashboard/upload" 
+            className="group relative inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl text-sm font-black text-white bg-foreground hover:scale-105 active:scale-95 transition-all shadow-xl shadow-black/10"
+          >
+            <Plus className="w-4 h-4" />
+            <span>New Dataset</span>
+          </Link>
+        </div>
       </div>
 
       {/* Stats Cards */}
@@ -43,64 +45,89 @@ export default async function DashboardOverview() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
-          {/* Main Chart Area */}
-          <div className="glass-panel rounded-[40px] p-10 min-h-[450px] flex flex-col relative overflow-hidden group border-black/[0.03] shadow-2xl">
-            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
-                <BarChart3 className="w-48 h-48 text-vivid-purple" />
-            </div>
-            
-            <div className="relative z-10">
-                <h2 className="text-2xl font-heading font-black text-foreground mb-2">Revenue Velocity</h2>
-                <p className="text-[10px] font-black text-foreground/20 uppercase tracking-[0.2em] mb-12">Comparative growth analytics</p>
-                
-                <div className="flex-1 flex flex-col items-center justify-center text-center py-10">
-                    <div className="w-24 h-24 mb-8 rounded-[32px] bg-black/[0.02] flex items-center justify-center border border-black/5 group-hover:border-vivid-red/30 transition-colors">
-                        <BarChart3 className="w-10 h-10 text-vivid-red" />
-                    </div>
-                    <h3 className="text-xl font-bold text-foreground mb-3 tracking-tight">Intelligence Awaiting Input</h3>
-                    <p className="text-sm font-medium text-foreground/40 max-w-sm mb-10 leading-relaxed">
-                        The analytics engine is primed. Upload a fresh dataset to visualize the heartbeat of your business.
-                    </p>
-                    <Link
-                        href="/dashboard/upload"
-                        className="inline-flex items-center gap-3 text-vivid-red font-black text-xs uppercase tracking-[0.2em] hover:gap-5 transition-all"
-                    >
-                        Initialize Upload <ArrowRight className="w-4 h-4" />
-                    </Link>
+          {/* Recent Datasets Selection */}
+          <div className="glass-panel rounded-[40px] p-10 min-h-[450px] flex flex-col relative overflow-hidden border-black/[0.03] shadow-2xl">
+            <div className="relative z-10 w-full">
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h2 className="text-2xl font-heading font-black text-foreground mb-2">Available Datasets</h2>
+                  <p className="text-[10px] font-black text-foreground/20 uppercase tracking-[0.2em]">Select a source for deep analytics</p>
                 </div>
+                <Database className="w-8 h-8 text-vivid-red/20" />
+              </div>
+              
+              {datasets.length === 0 ? (
+                <div className="flex-1 flex flex-col items-center justify-center text-center py-20">
+                  <div className="w-20 h-20 mb-6 rounded-3xl bg-black/[0.02] flex items-center justify-center border border-black/5">
+                    <Database className="w-10 h-10 text-vivid-red" />
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground mb-3">No datasets found</h3>
+                  <p className="text-sm font-medium text-foreground/40 max-w-sm mb-10 leading-relaxed">
+                    Start by uploading a CSV or Excel file to begin your reporting journey.
+                  </p>
+                  <Link
+                    href="/dashboard/upload"
+                    className="inline-flex items-center gap-3 text-vivid-red font-black text-xs uppercase tracking-[0.2em] hover:gap-5 transition-all"
+                  >
+                    Initialize First Upload <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {datasets.map((ds: any) => (
+                    <Link 
+                      key={ds.id} 
+                      href={`/dashboard/dataset/${ds.id}`}
+                      className="group p-6 rounded-3xl bg-white border border-black/[0.03] hover:border-vivid-red/30 hover:shadow-xl transition-all duration-300"
+                    >
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="w-10 h-10 rounded-xl bg-vivid-red/10 flex items-center justify-center text-vivid-red">
+                          <Database className="w-5 h-5" />
+                        </div>
+                        <div className="text-[10px] font-bold text-foreground/20 uppercase tracking-widest flex items-center gap-1.5">
+                          <Clock className="w-3 h-3" />
+                          {new Date(ds.created_at).toLocaleDateString()}
+                        </div>
+                      </div>
+                      <h3 className="text-lg font-bold text-foreground group-hover:text-vivid-red transition-colors truncate">
+                        {ds.name}
+                      </h3>
+                      <div className="mt-4 flex items-center justify-between">
+                        <span className="text-[10px] font-black text-foreground/40 uppercase tracking-tighter">Enter Analytics</span>
+                        <ArrowRight className="w-4 h-4 text-vivid-red opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
-            
             <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-vivid-red/5 rounded-full blur-[80px] pointer-events-none opacity-40"></div>
           </div>
         </div>
 
         <div className="space-y-8">
-          {/* Quick AI Insights */}
-          <div className="glass-panel rounded-[40px] p-8 relative overflow-hidden shadow-xl border-black/[0.03]">
+          {/* Dashboard Builder Mode Placeholder */}
+          <div className="glass-panel rounded-[40px] p-8 relative overflow-hidden shadow-xl border-black/[0.03] bg-gradient-to-br from-white to-soft-slate">
             <div className="flex items-center gap-4 mb-8">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-vivid-red to-vivid-purple flex items-center justify-center shadow-lg shadow-vivid-red/20">
-                <Sparkles className="w-6 h-6 text-white" />
+              <div className="w-12 h-12 rounded-2xl bg-black flex items-center justify-center shadow-lg shadow-black/20">
+                <LayoutGrid className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className="text-lg font-heading font-black text-foreground leading-none uppercase tracking-tighter">AI Pulse</h2>
-                <p className="text-[10px] font-bold text-foreground/20 uppercase tracking-widest mt-1">Real-time heuristics</p>
+                <h2 className="text-lg font-heading font-black text-foreground leading-none uppercase tracking-tighter">Storyboards</h2>
+                <p className="text-[10px] font-bold text-foreground/20 uppercase tracking-widest mt-1">Custom Dashboards</p>
               </div>
             </div>
             
             <div className="space-y-6">
-              <div className="p-6 rounded-3xl bg-soft-slate border border-black/[0.03] relative overflow-hidden group">
+              <div className="p-6 rounded-3xl bg-black/[0.02] border border-black/[0.03] relative overflow-hidden group">
                 <p className="text-sm font-medium text-foreground/60 leading-relaxed relative z-10 italic">
-                  "Ready to cross-reference customer behavior with your latest sales export. Let's find your hidden champions."
+                  "Pin your favorite charts and insights here to build a personalized business storyboard."
                 </p>
               </div>
               
-              <Link
-                href="/dashboard/ai-assistant"
-                className="w-full flex items-center justify-between py-4 px-6 rounded-2xl bg-white border border-black/[0.05] text-sm font-black text-foreground hover:bg-soft-slate transition-all shadow-sm"
-              >
-                <span>Activate Assistant</span>
-                <ArrowRight className="w-4 h-4 text-vivid-red" />
-              </Link>
+              <div className="p-4 rounded-2xl bg-white border border-black/[0.05] text-[10px] font-black text-foreground/30 uppercase tracking-widest text-center shadow-sm">
+                Dashboard Builder Active (Module 4)
+              </div>
             </div>
           </div>
 
@@ -173,3 +200,4 @@ function StatCard({ title, value, icon: Icon, trend, color }: any) {
     </div>
   )
 }
+
