@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, BarChart3, Database, TrendingUp, Users } from 'lucide-react'
+import { ArrowRight, BarChart3, Database, TrendingUp, Users, Sparkles, Zap } from 'lucide-react'
 import { getDatasets } from '@/app/actions/dataset'
 import { getCustomers, getCustomerTransactions } from '@/app/actions/crm'
 
@@ -18,15 +18,15 @@ export default async function DashboardOverview() {
   }
 
   return (
-    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="space-y-12 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-6 border-b border-black/5">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Overview</h1>
-          <p className="mt-1 text-gray-500">Welcome back. Here's what's happening with your business today.</p>
+          <h1 className="text-4xl font-heading font-black tracking-tighter text-foreground">Ecosystem <span className="text-vivid-red">Clarity</span></h1>
+          <p className="mt-2 text-foreground/40 font-bold uppercase tracking-widest text-[10px]">Live business intelligence feed</p>
         </div>
         <Link 
           href="/dashboard/upload" 
-          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 shadow-sm hover:shadow-md transition-all sm:w-auto"
+          className="group relative inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-2xl text-sm font-black text-white bg-foreground hover:scale-105 active:scale-95 transition-all shadow-xl shadow-black/10"
         >
           <Database className="w-4 h-4" />
           <span>Upload Dataset</span>
@@ -34,77 +34,91 @@ export default async function DashboardOverview() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        <StatCard title="Total Datasets" value={datasets.length} icon={Database} prefix="" suffix="" trend="Active" color="blue" />
-        <StatCard title="Local Insights" value="Ready" icon={BarChart3} prefix="" suffix="" trend="Auto" color="purple" />
-        <StatCard title="Total Customers" value={customers.length} icon={Users} prefix="" suffix="" trend="Active" color="indigo" />
-        <StatCard title="Total Sales" value={monthlyRevenue.toLocaleString('en-US', { minimumFractionDigits: 2 })} icon={TrendingUp} prefix="$" suffix="" trend="All Time" color="emerald" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatCard title="Datasets" value={datasets.length} icon={Database} trend="+2.4%" color="red" />
+        <StatCard title="AI Readiness" value="Optimal" icon={Sparkles} trend="Live" color="purple" />
+        <StatCard title="Customers" value={customers.length} icon={Users} trend="Growing" color="deep-purple" />
+        <StatCard title="Total Revenue" value={monthlyRevenue.toLocaleString('en-US', { minimumFractionDigits: 2 })} icon={TrendingUp} trend="Direct" color="rose" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
-          {/* Main Chart Area Placeholder */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 min-h-[400px] flex flex-col relative overflow-hidden">
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Revenue Analytics</h2>
-            <p className="text-sm text-gray-500 mb-8">Upload data or use CRM to see your analytics</p>
-            
-            <div className="flex-1 flex flex-col items-center justify-center text-center opacity-70">
-              <div className="w-24 h-24 mb-6 rounded-full bg-indigo-50 flex items-center justify-center">
-                <BarChart3 className="w-10 h-10 text-indigo-300" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900">No Data Available</h3>
-              <p className="mt-2 text-sm text-gray-500 max-w-sm">
-                Get started by uploading your first Excel or CSV dataset to automatically generate beautiful charts and insights.
-              </p>
-              <Link
-                href="/dashboard/upload"
-                className="mt-6 inline-flex items-center gap-2 text-indigo-600 font-medium hover:text-indigo-700"
-              >
-                Upload Data <ArrowRight className="w-4 h-4" />
-              </Link>
+          {/* Main Chart Area */}
+          <div className="glass-panel rounded-[40px] p-10 min-h-[450px] flex flex-col relative overflow-hidden group border-black/[0.03] shadow-2xl">
+            <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+                <BarChart3 className="w-48 h-48 text-vivid-purple" />
             </div>
             
-            <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-indigo-50 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
+            <div className="relative z-10">
+                <h2 className="text-2xl font-heading font-black text-foreground mb-2">Revenue Velocity</h2>
+                <p className="text-[10px] font-black text-foreground/20 uppercase tracking-[0.2em] mb-12">Comparative growth analytics</p>
+                
+                <div className="flex-1 flex flex-col items-center justify-center text-center py-10">
+                    <div className="w-24 h-24 mb-8 rounded-[32px] bg-black/[0.02] flex items-center justify-center border border-black/5 group-hover:border-vivid-red/30 transition-colors">
+                        <BarChart3 className="w-10 h-10 text-vivid-red" />
+                    </div>
+                    <h3 className="text-xl font-bold text-foreground mb-3 tracking-tight">Intelligence Awaiting Input</h3>
+                    <p className="text-sm font-medium text-foreground/40 max-w-sm mb-10 leading-relaxed">
+                        The analytics engine is primed. Upload a fresh dataset to visualize the heartbeat of your business.
+                    </p>
+                    <Link
+                        href="/dashboard/upload"
+                        className="inline-flex items-center gap-3 text-vivid-red font-black text-xs uppercase tracking-[0.2em] hover:gap-5 transition-all"
+                    >
+                        Initialize Upload <ArrowRight className="w-4 h-4" />
+                    </Link>
+                </div>
+            </div>
+            
+            <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-vivid-red/5 rounded-full blur-[80px] pointer-events-none opacity-40"></div>
           </div>
         </div>
 
         <div className="space-y-8">
-          {/* Quick Actions & AI Summary Placeholder */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-            <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <span className="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
-                ✨
-              </span>
-              AI Insights
-            </h2>
-            <div className="space-y-4">
-              <div className="p-4 rounded-2xl bg-gray-50 border border-gray-100">
-                <p className="text-sm text-gray-600">
-                  Upload your datasets, and I will analyze them to find trends, top performers, and anomalies automatically!
-                </p>
+          {/* Quick AI Insights */}
+          <div className="glass-panel rounded-[40px] p-8 relative overflow-hidden shadow-xl border-black/[0.03]">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-vivid-red to-vivid-purple flex items-center justify-center shadow-lg shadow-vivid-red/20">
+                <Sparkles className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h2 className="text-lg font-heading font-black text-foreground leading-none uppercase tracking-tighter">AI Pulse</h2>
+                <p className="text-[10px] font-bold text-foreground/20 uppercase tracking-widest mt-1">Real-time heuristics</p>
               </div>
             </div>
-            <Link
-              href="/dashboard/ai-assistant"
-              className="mt-6 w-full flex items-center justify-center py-2.5 px-4 rounded-xl border border-gray-200 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
-            >
-              Open AI Assistant
-            </Link>
+            
+            <div className="space-y-6">
+              <div className="p-6 rounded-3xl bg-soft-slate border border-black/[0.03] relative overflow-hidden group">
+                <p className="text-sm font-medium text-foreground/60 leading-relaxed relative z-10 italic">
+                  "Ready to cross-reference customer behavior with your latest sales export. Let's find your hidden champions."
+                </p>
+              </div>
+              
+              <Link
+                href="/dashboard/ai-assistant"
+                className="w-full flex items-center justify-between py-4 px-6 rounded-2xl bg-white border border-black/[0.05] text-sm font-black text-foreground hover:bg-soft-slate transition-all shadow-sm"
+              >
+                <span>Activate Assistant</span>
+                <ArrowRight className="w-4 h-4 text-vivid-red" />
+              </Link>
+            </div>
           </div>
 
-          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-6 text-white shadow-lg relative overflow-hidden">
-             <div className="absolute top-0 right-0 p-4 opacity-10">
-               <Users className="w-24 h-24" />
+          <div className="rounded-[40px] p-8 bg-gradient-to-br from-soft-slate to-white border border-black/[0.03] relative overflow-hidden group shadow-xl">
+             <div className="absolute -top-12 -right-12 p-4 opacity-[0.03] group-hover:opacity-5 transition-opacity">
+               <Users className="w-48 h-48 text-electric-purple" />
              </div>
-             <h2 className="text-xl font-bold mb-2 relative z-10">Local CRM Lite</h2>
-             <p className="text-gray-300 text-sm mb-6 relative z-10">
-               Manage customers, track sales, and monitor credit directly from your dashboard.
+             
+             <h2 className="text-xl font-heading font-black text-foreground mb-2 relative z-10">Sales Ecosystem</h2>
+             <p className="text-foreground/40 text-sm font-medium mb-10 relative z-10 leading-relaxed uppercase tracking-tighter">
+               Manage customers and monitor credit limits with high-fidelity tracking.
              </p>
+             
              <Link
                href="/dashboard/crm"
-               className="relative z-10 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-colors text-sm font-medium border border-white/10 text-white"
+               className="relative z-10 inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-foreground text-white hover:scale-105 transition-all text-xs font-black shadow-xl"
              >
-               Manage Customers <ArrowRight className="w-4 h-4" />
+               Enter CRM <ArrowRight className="w-4 h-4" />
              </Link>
           </div>
         </div>
@@ -113,29 +127,47 @@ export default async function DashboardOverview() {
   )
 }
 
-function StatCard({ title, value, icon: Icon, prefix, suffix, trend, color }: any) {
-  const colors: Record<string, string> = {
-    blue: 'bg-blue-50 text-blue-600',
-    purple: 'bg-purple-50 text-purple-600',
-    indigo: 'bg-indigo-50 text-indigo-600',
-    emerald: 'bg-emerald-50 text-emerald-600',
+function StatCard({ title, value, icon: Icon, trend, color }: any) {
+  const themes: Record<string, any> = {
+    red: { 
+        bg: 'bg-vivid-red/10', 
+        text: 'text-vivid-red',
+        border: 'border-vivid-red/10'
+    },
+    purple: { 
+        bg: 'bg-vivid-purple/10', 
+        text: 'text-vivid-purple',
+        border: 'border-vivid-purple/10'
+    },
+    'deep-purple': { 
+        bg: 'bg-electric-purple/10', 
+        text: 'text-electric-purple',
+        border: 'border-electric-purple/10'
+    },
+    rose: { 
+        bg: 'bg-vivid-rose/10', 
+        text: 'text-vivid-rose',
+        border: 'border-vivid-rose/10'
+    },
   }
 
+  const theme = themes[color] || themes.red
+
   return (
-    <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-medium text-gray-500">{title}</h3>
-        <div className={`w-10 h-10 rounded-2xl flex items-center justify-center ${colors[color]}`}>
-          <Icon className="w-5 h-5" />
+    <div className="glass-panel p-6 rounded-[32px] border-black/[0.02] shadow-xl hover:scale-[1.02] transition-all duration-500 group">
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-[10px] font-black tracking-[0.2em] text-foreground/20 uppercase">{title}</h3>
+        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 ${theme.bg} ${theme.text} group-hover:scale-110 shadow-sm`}>
+          <Icon className="w-6 h-6" />
         </div>
       </div>
       <div>
-        <div className="text-2xl font-bold text-gray-900">
-          {prefix}{value}{suffix}
+        <div className="text-3xl font-heading font-black text-foreground tracking-tighter">
+          {value}
         </div>
-        <div className="mt-1 flex items-center text-sm">
-          <span className="text-emerald-600 font-medium">{trend}</span>
-          <span className="text-gray-400 ml-2">from last month</span>
+        <div className={`mt-2 flex items-center text-[11px] font-black uppercase tracking-widest ${theme.text}`}>
+          <Zap className="w-3 h-3 mr-1.5 animate-pulse" />
+          {trend}
         </div>
       </div>
     </div>
